@@ -8,8 +8,9 @@ spec:
   ports:
   - protocol: TCP
     port: 8070
+    targetPort: 8070
     nodePort: 30000
-  type: NodePort
+  type: "NodePort"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,9 +36,18 @@ spec:
         imagePullPolicy: Never
         env:
           - name: EUREKA_APP_NAME
-            value: "eureka-server"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_APP_NAME
           - name: EUREKA_PORT
-            value: "8070"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_PORT
           - name: EUREKA_HOSTNAME
-            value: "localhost"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME
 status: {}

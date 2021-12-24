@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-data
+data:
+  initdb.sql: |
+    create database if not exists `auth`;
+    create database if not exists `catalog`;
+    create database if not exists `orders`;
+    create user 'root'@'localhost' identified by 'root';
+    grant all on *.*  to 'root'@'%';
+  EUREKA_APP_NAME: eureka-server
+  EUREKA_PORT: "8070"
+  EUREKA_HOSTNAME: localhost
+  EUREKA_HOSTNAME_DEPLOYED: eureka-server
+  AUTH_APP_NAME: auth-server
+  AUTH_PORT: "8080"
+  AUTH_DATABASE_URL: jdbc:mysql://mysql/auth

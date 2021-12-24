@@ -1,0 +1,67 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: auth-server
+spec:
+  selector:
+    app: auth-server
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30002
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: auth-server
+  name: auth-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: auth-server
+    spec:
+      containers:
+      - image: 2504998/auth-service:latest
+        name: auth-server
+        resources: {}
+        imagePullPolicy: Never
+        env:
+          - name: AUTH_APP_NAME
+            value: "auth-server"
+          - name: AUTH_PORT
+            value: "8080"
+          - name: DATABASE_HOSTNAME
+            value: "mysql"
+          - name: DATABASE_PORT
+            value: ""
+          - name: DATABASE_SCHEMA
+            value: "auth"
+          - name: DATABASE_USERNAME
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_password
+          - name: EUREKA_HOSTNAME
+            value: "eureka-server"
+          - name: EUREKA_PORT
+            value: "8070"
+          - name: SECURITY_SECRET_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: security_key
+status: {}
