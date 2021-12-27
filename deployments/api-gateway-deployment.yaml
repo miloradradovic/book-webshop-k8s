@@ -1,53 +1,58 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: eureka-server
+  name: api-gateway-server
 spec:
   selector:
-    app: eureka-server
+    app: api-gateway-server
   ports:
   - protocol: TCP
-    port: 8070
-    targetPort: 8070
-    #nodePort: 30000
+    port: 8072
+    targetPort: 8072
+    #nodePort: 30002
   type: "NodePort"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: eureka-server
-  name: eureka-server
+    app: api-gateway-server
+  name: api-gateway-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eureka-server
+      app: api-gateway-server
   strategy: {}
   template:
     metadata:
       labels:
-        app: eureka-server
+        app: api-gateway-server
     spec:
       containers:
-      - image: 2504998/eureka-server:latest
-        name: eureka-server
+      - image: 2504998/api-gateway-server:latest
+        name: api-gateway-server
         resources: {}
         imagePullPolicy: Never
         env:
-          - name: EUREKA_APP_NAME
+          - name: GATEWAY_APP_NAME
             valueFrom:
               configMapKeyRef:
                 name: config-data
-                key: EUREKA_APP_NAME
+                key: GATEWAY_APP_NAME
+          - name: GATEWAY_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: GATEWAY_PORT
+          - name: EUREKA_HOSTNAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME_DEPLOYED
           - name: EUREKA_PORT
             valueFrom:
               configMapKeyRef:
                 name: config-data
                 key: EUREKA_PORT
-          - name: EUREKA_HOSTNAME
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: EUREKA_HOSTNAME
 status: {}

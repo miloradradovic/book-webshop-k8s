@@ -9,7 +9,7 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: 8080
-    nodePort: 30002
+    #nodePort: 30002
   type: "NodePort"
 ---
 apiVersion: apps/v1
@@ -36,15 +36,20 @@ spec:
         imagePullPolicy: Never
         env:
           - name: AUTH_APP_NAME
-            value: "auth-server"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: AUTH_APP_NAME
           - name: AUTH_PORT
-            value: "8080"
-          - name: DATABASE_HOSTNAME
-            value: "mysql"
-          - name: DATABASE_PORT
-            value: ""
-          - name: DATABASE_SCHEMA
-            value: "auth"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: AUTH_PORT
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: AUTH_DATABASE_URL
           - name: DATABASE_USERNAME
             valueFrom:
                 secretKeyRef:
@@ -56,9 +61,15 @@ spec:
                   name: secret-data
                   key: db_password
           - name: EUREKA_HOSTNAME
-            value: "eureka-server"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME_DEPLOYED
           - name: EUREKA_PORT
-            value: "8070"
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_PORT
           - name: SECURITY_SECRET_KEY
             valueFrom:
                 secretKeyRef:

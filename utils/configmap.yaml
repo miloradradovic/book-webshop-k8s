@@ -9,10 +9,19 @@ data:
     create database if not exists `orders`;
     create user 'root'@'localhost' identified by 'root';
     grant all on *.*  to 'root'@'%';
+  
   EUREKA_APP_NAME: eureka-server
+  GATEWAY_APP_NAME: api-gateway-server
+  AUTH_APP_NAME: auth-server
+  
   EUREKA_PORT: "8070"
+  EUREKA_DEPLOYED_PORT: "30536"
+  AUTH_PORT: "8080"
+  AUTH_DEPLOYED_PORT: "31240"
+  GATEWAY_PORT: "8072"
+  GATEWAY_DEPLOYED_PORT: "32457"
+  
   EUREKA_HOSTNAME: localhost
   EUREKA_HOSTNAME_DEPLOYED: eureka-server
-  AUTH_APP_NAME: auth-server
-  AUTH_PORT: "8080"
+  
   AUTH_DATABASE_URL: jdbc:mysql://mysql/auth
