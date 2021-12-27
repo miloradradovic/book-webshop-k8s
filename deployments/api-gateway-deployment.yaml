@@ -33,7 +33,7 @@ spec:
       - image: 2504998/api-gateway-server:latest
         name: api-gateway-server
         resources: {}
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         env:
           - name: GATEWAY_APP_NAME
             valueFrom:

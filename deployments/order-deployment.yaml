@@ -1,14 +1,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: catalog-server
+  name: order-server
 spec:
   selector:
-    app: catalog-server
+    app: order-server
   ports:
   - protocol: TCP
-    port: 8081
-    targetPort: 8081
+    port: 8082
+    targetPort: 8082
     #nodePort: 30002
   type: "NodePort"
 ---
@@ -16,40 +16,40 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: catalog-server
-  name: catalog-server
+    app: order-server
+  name: order-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: catalog-server
+      app: order-server
   strategy: {}
   template:
     metadata:
       labels:
-        app: catalog-server
+        app: order-server
     spec:
       containers:
-      - image: 2504998/catalog-service:latest
-        name: catalog-server
+      - image: 2504998/order-service:latest
+        name: order-server
         resources: {}
         imagePullPolicy: Always
         env:
-          - name: CATALOG_APP_NAME
+          - name: ORDER_APP_NAME
             valueFrom:
               configMapKeyRef:
                 name: config-data
-                key: CATALOG_APP_NAME
-          - name: CATALOG_PORT
+                key: ORDER_APP_NAME
+          - name: ORDER_PORT
             valueFrom:
               configMapKeyRef:
                 name: config-data
-                key: CATALOG_PORT
+                key: ORDER_PORT
           - name: SPRING_DATASOURCE_URL
             valueFrom:
               configMapKeyRef:
                 name: config-data
-                key: CATALOG_DATABASE_URL
+                key: ORDER_DATABASE_URL
           - name: DATABASE_USERNAME
             valueFrom:
                 secretKeyRef:
@@ -76,4 +76,3 @@ spec:
                   name: secret-data
                   key: security_key
 status: {}
-# comment 
