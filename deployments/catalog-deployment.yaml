@@ -1,0 +1,78 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: catalog-server
+spec:
+  selector:
+    app: catalog-server
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
+    #nodePort: 30002
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: catalog-server
+  name: catalog-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: catalog-server
+    spec:
+      containers:
+      - image: 2504998/catalog-service:latest
+        name: catalog-server
+        resources: {}
+        imagePullPolicy: Never
+        env:
+          - name: CATALOG_APP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: CATALOG_APP_NAME
+          - name: CATALOG_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: CATALOG_PORT
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: CATALOG_DATABASE_URL
+          - name: DATABASE_USERNAME
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_password
+          - name: EUREKA_HOSTNAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME_DEPLOYED
+          - name: EUREKA_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_PORT
+          - name: SECURITY_SECRET_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: security_key
+status: {}

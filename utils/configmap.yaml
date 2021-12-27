@@ -13,6 +13,7 @@ data:
   EUREKA_APP_NAME: eureka-server
   GATEWAY_APP_NAME: api-gateway-server
   AUTH_APP_NAME: auth-server
+  CATALOG_APP_NAME: catalog-server
   
   EUREKA_PORT: "8070"
   EUREKA_DEPLOYED_PORT: "30536"
@@ -20,8 +21,11 @@ data:
   AUTH_DEPLOYED_PORT: "31240"
   GATEWAY_PORT: "8072"
   GATEWAY_DEPLOYED_PORT: "32457"
+  CATALOG_PORT: "8081"
+  CATALOG_DEPLOYED_PORT: "31836"
   
   EUREKA_HOSTNAME: localhost
   EUREKA_HOSTNAME_DEPLOYED: eureka-server
   
   AUTH_DATABASE_URL: jdbc:mysql://mysql/auth
+  CATALOG_DATABASE_URL: jdbc:mysql://mysql/catalog
