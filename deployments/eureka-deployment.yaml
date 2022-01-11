@@ -1,0 +1,53 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: eureka-server
+spec:
+  selector:
+    app: eureka-server
+  ports:
+  - protocol: TCP
+    port: 8070
+    targetPort: 8070
+    #nodePort: 30000
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: eureka-server
+  name: eureka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+      - image: 2504998/eureka-server:latest
+        name: eureka-server
+        resources: {}
+        imagePullPolicy: Always
+        env:
+          - name: EUREKA_APP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_APP_NAME
+          - name: EUREKA_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_PORT
+          - name: EUREKA_HOSTNAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME
+status: {}

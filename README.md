@@ -1,1 +1,1 @@
-# book-webshop-k8s
+# First deploy files from utils, then from deployments

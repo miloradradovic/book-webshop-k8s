@@ -1,0 +1,78 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: auth-server
+spec:
+  selector:
+    app: auth-server
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    #nodePort: 30002
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: auth-server
+  name: auth-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: auth-server
+    spec:
+      containers:
+      - image: 2504998/auth-service:latest
+        name: auth-server
+        resources: {}
+        imagePullPolicy: Always
+        env:
+          - name: AUTH_APP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: AUTH_APP_NAME
+          - name: AUTH_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: AUTH_PORT
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: AUTH_DATABASE_URL
+          - name: DATABASE_USERNAME
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_password
+          - name: EUREKA_HOSTNAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME_DEPLOYED
+          - name: EUREKA_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_PORT
+          - name: SECURITY_SECRET_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: security_key
+status: {}
