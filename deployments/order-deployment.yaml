@@ -1,0 +1,77 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: order-server
+spec:
+  selector:
+    app: order-server
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8082
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: order-server
+  name: order-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: order-server
+    spec:
+      containers:
+      - image: comeee98/book-webshop-order:latest
+        name: order-server
+        resources: {}
+        imagePullPolicy: Always
+        env:
+          - name: ORDER_APP_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: ORDER_APP_NAME
+          - name: ORDER_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: ORDER_PORT
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: ORDER_DATABASE_URL
+          - name: DATABASE_USERNAME
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: db_password
+          - name: EUREKA_HOSTNAME
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_HOSTNAME_DEPLOYED
+          - name: EUREKA_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: EUREKA_PORT
+          - name: SECURITY_SECRET_KEY
+            valueFrom:
+                secretKeyRef:
+                  name: secret-data
+                  key: security_key
+status: {}

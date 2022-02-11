@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: photo-upload-server
+spec:
+  selector:
+    app: photo-upload-server
+  ports:
+  - protocol: TCP
+    port: 8085
+    targetPort: 8085
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: photo-upload-server
+  name: photo-upload-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photo-upload-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: photo-upload-server
+    spec:
+      containers:
+      - image: comeee98/photo-upload:latest
+        name: photo-upload-server
+        resources: {}
+        imagePullPolicy: Always
+        env:
+          - name: PHOTO_UPLOAD_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-data
+                key: PHOTO_UPLOAD_PORT
+status: {}

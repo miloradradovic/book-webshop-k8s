@@ -1,0 +1,39 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: book-webshop-client
+spec:
+  selector:
+    app: book-webshop-client
+  ports:
+    - protocol: TCP
+      port: 80
+  type: "NodePort"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: book-webshop-client
+  name: book-webshop-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-webshop-client
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: book-webshop-client
+    spec:
+      containers:
+        - image: comeee98/book-webshop-client:latest
+          name: book-webshop-client
+          resources: {}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
+status: {}
+# comment
+
