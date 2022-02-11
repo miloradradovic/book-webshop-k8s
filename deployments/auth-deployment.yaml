@@ -9,7 +9,6 @@ spec:
   - protocol: TCP
     port: 8080
     targetPort: 8080
-    #nodePort: 30002
   type: "NodePort"
 ---
 apiVersion: apps/v1
@@ -30,7 +29,7 @@ spec:
         app: auth-server
     spec:
       containers:
-      - image: 2504998/auth-service:latest
+      - image: comeee98/book-webshop-auth:latest
         name: auth-server
         resources: {}
         imagePullPolicy: Always

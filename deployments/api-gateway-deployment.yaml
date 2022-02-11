@@ -6,10 +6,9 @@ spec:
   selector:
     app: api-gateway-server
   ports:
-  - protocol: TCP
-    port: 8072
-    targetPort: 8072
-    #nodePort: 30002
+    - protocol: TCP
+      port: 8072
+      targetPort: 8072
   type: "NodePort"
 ---
 apiVersion: apps/v1
@@ -30,29 +29,29 @@ spec:
         app: api-gateway-server
     spec:
       containers:
-      - image: 2504998/api-gateway-server:latest
-        name: api-gateway-server
-        resources: {}
-        imagePullPolicy: Always
-        env:
-          - name: GATEWAY_APP_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: GATEWAY_APP_NAME
-          - name: GATEWAY_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: GATEWAY_PORT
-          - name: EUREKA_HOSTNAME
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: EUREKA_HOSTNAME_DEPLOYED
-          - name: EUREKA_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: EUREKA_PORT
+        - image: comeee98/book-webshop-api-gateway:latest
+          name: api-gateway-server
+          resources: {}
+          imagePullPolicy: Always
+          env:
+            - name: GATEWAY_APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: GATEWAY_APP_NAME
+            - name: GATEWAY_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: GATEWAY_PORT
+            - name: EUREKA_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: EUREKA_HOSTNAME_DEPLOYED
+            - name: EUREKA_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: EUREKA_PORT
 status: {}

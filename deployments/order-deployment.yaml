@@ -9,7 +9,6 @@ spec:
   - protocol: TCP
     port: 8082
     targetPort: 8082
-    #nodePort: 30002
   type: "NodePort"
 ---
 apiVersion: apps/v1
@@ -30,7 +29,7 @@ spec:
         app: order-server
     spec:
       containers:
-      - image: 2504998/order-service:latest
+      - image: comeee98/book-webshop-order:latest
         name: order-server
         resources: {}
         imagePullPolicy: Always

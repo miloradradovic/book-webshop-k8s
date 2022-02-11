@@ -6,10 +6,9 @@ spec:
   selector:
     app: catalog-server
   ports:
-  - protocol: TCP
-    port: 8081
-    targetPort: 8081
-    #nodePort: 30002
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
   type: "NodePort"
 ---
 apiVersion: apps/v1
@@ -30,50 +29,50 @@ spec:
         app: catalog-server
     spec:
       containers:
-      - image: 2504998/catalog-service:latest
-        name: catalog-server
-        resources: {}
-        imagePullPolicy: Always
-        env:
-          - name: CATALOG_APP_NAME
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: CATALOG_APP_NAME
-          - name: CATALOG_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: CATALOG_PORT
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: CATALOG_DATABASE_URL
-          - name: DATABASE_USERNAME
-            valueFrom:
+        - image: comeee98/book-webshop-catalog:latest
+          name: catalog-server
+          resources: {}
+          imagePullPolicy: Always
+          env:
+            - name: CATALOG_APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: CATALOG_APP_NAME
+            - name: CATALOG_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: CATALOG_PORT
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: CATALOG_DATABASE_URL
+            - name: DATABASE_USERNAME
+              valueFrom:
                 secretKeyRef:
                   name: secret-data
                   key: db_username
-          - name: DATABASE_PASSWORD
-            valueFrom:
+            - name: DATABASE_PASSWORD
+              valueFrom:
                 secretKeyRef:
                   name: secret-data
                   key: db_password
-          - name: EUREKA_HOSTNAME
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: EUREKA_HOSTNAME_DEPLOYED
-          - name: EUREKA_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: config-data
-                key: EUREKA_PORT
-          - name: SECURITY_SECRET_KEY
-            valueFrom:
+            - name: EUREKA_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: EUREKA_HOSTNAME_DEPLOYED
+            - name: EUREKA_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: config-data
+                  key: EUREKA_PORT
+            - name: SECURITY_SECRET_KEY
+              valueFrom:
                 secretKeyRef:
                   name: secret-data
                   key: security_key
 status: {}
-# comment 
+# comment

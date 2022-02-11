@@ -9,7 +9,6 @@ spec:
   - protocol: TCP
     port: 8070
     targetPort: 8070
-    #nodePort: 30000
   type: "NodePort"
 ---
 apiVersion: apps/v1
@@ -30,7 +29,7 @@ spec:
         app: eureka-server
     spec:
       containers:
-      - image: 2504998/eureka-server:latest
+      - image: comeee98/book-webshop-eureka:latest
         name: eureka-server
         resources: {}
         imagePullPolicy: Always

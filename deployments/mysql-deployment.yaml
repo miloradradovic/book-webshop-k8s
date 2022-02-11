@@ -7,7 +7,6 @@ metadata:
 spec:
   ports:
     - port: 3306
-      #nodePort: 30001
   type: "NodePort"
   selector:
     app: mysql
@@ -41,8 +40,9 @@ spec:
         app: mysql
     spec:
       containers:
-        - image: mysql
+        - image: mysql:latest
           name: mysql
+          imagePullPolicy: Always
           resources:
             limits:
               memory: "1Gi"
